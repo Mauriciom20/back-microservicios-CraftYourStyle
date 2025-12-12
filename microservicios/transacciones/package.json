@@ -1,24 +1,24 @@
 {
-  "name": "personalizacion",
+  "name": "transacciones",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Microservicio de transacciones para CraftYourStyle",
+  "main": "dist/index.js",
+  "license": "ISC",
   "scripts": {
-    "build": "npx tsc",
+    "dev": "ts-node-dev --respawn --transpile-only index.ts",
+    "build": "tsc",
     "start": "node dist/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "@types/express": "^5.0.3",
     "axios": "^1.13.2",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "mysql2": "^3.15.2",
-    "typescript": "^5.9.3"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.15.2"
   },
   "devDependencies": {
-    "@types/node": "^24.7.2"
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.12",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.3"
   }
 }

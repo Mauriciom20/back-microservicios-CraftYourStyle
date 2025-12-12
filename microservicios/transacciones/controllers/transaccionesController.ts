@@ -23,6 +23,18 @@ export class TransaccionesController {
     try {
       const { numero_de_cuenta, tipo_de_cuenta, banco, id_user } = req.body;
 
+      if (!numero_de_cuenta || !tipo_de_cuenta || !id_user) {
+        return res.status(400).json({
+          message: "Campos obligatorios faltantes (numero_de_cuenta, tipo_de_cuenta, id_user)"
+        });
+      }
+
+      if (!["debito", "credito"].includes(tipo_de_cuenta)) {
+        return res.status(400).json({
+          message: "tipo_de_cuenta debe ser 'debito' o 'credito'"
+        });
+      }
+
       const newTransaccion: TransaccionDto = {
         numero_de_cuenta,
         tipo_de_cuenta,
@@ -41,7 +53,7 @@ export class TransaccionesController {
 
       const result = await TransaccionesRepository.create(newTransaccion);
 
-      res.status(201).json({ message: "Transacción creada", id: result });
+      res.status(201).json({ message: "Transacción creada correctamente", id: result });
     } catch (error) {
       res.status(500).json({ message: "Error al crear la transacción", error });
       console.error("Error al crear la transacción:", error);
@@ -61,8 +73,18 @@ export class TransaccionesController {
       const cuenta = await TransaccionesRepository.findAccountsByUserId(
         Number(id_user)
       );
+      // MOCK TEMPORAL DEL MICROSERVICIO DE USUARIOS (solo para pruebas locales)
+      const usuarioMock = {
+        id: Number(id_user),
+        nombre: "Usuario Prueba",
+        email: "usuario@prueba.com"
+      };
 
-      const { data } = await axios.get(
+      res.status(200).json({
+        usuario: usuarioMock,
+        cuentas: cuenta,
+      });
+      /*const { data } = await axios.get(
         `http://localhost:8080/v1/usuarios/${id_user}`
       );
 
@@ -71,7 +93,7 @@ export class TransaccionesController {
       res.status(200).json({
         usuario: usuarioSinContraseña,
         cuentas: cuenta,
-      });
+      });*/
     } catch (error: any) {
       console.error("Error obteniendo transacciones:", error.message);
       return res.status(500).json({ mensaje: "Error obteniendo información" });
